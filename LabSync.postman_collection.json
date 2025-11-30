@@ -1,0 +1,211 @@
+{
+  "info": {
+    "name": "LabSync AI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Sprint 1-6 API collection"
+  },
+  "item": [
+    {
+      "name": "Webhook - Telegram",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{backend}}/api/webhook/telegram",
+          "host": [
+            "{{backend}}"
+          ],
+          "path": [
+            "api",
+            "webhook",
+            "telegram"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"update_id\": 1,\n  \"message\": {\n    \"message_id\": 111,\n    \"from\": { \"id\": 555 },\n    \"date\": {{timestamp}},\n    \"text\": \"Team meeting tomorrow at 3pm\"\n  }\n}"
+        }
+      }
+    },
+    {
+      "name": "Messages - List",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{backend}}/api/messages",
+          "host": [
+            "{{backend}}"
+          ],
+          "path": [
+            "api",
+            "messages"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Messages - Tag",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{backend}}/api/messages/{{messageId}}/tag",
+          "host": [
+            "{{backend}}"
+          ],
+          "path": [
+            "api",
+            "messages",
+            "{{messageId}}",
+            "tag"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"tag\": \"meeting\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Extract Event",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "{{backend}}/api/extract/{{messageId}}",
+          "host": [
+            "{{backend}}"
+          ],
+          "path": [
+            "api",
+            "extract",
+            "{{messageId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Events - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{backend}}/api/events/create",
+          "host": [
+            "{{backend}}"
+          ],
+          "path": [
+            "api",
+            "events",
+            "create"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"extractedEventId\": \"{{extractedId}}\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Events - List",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{backend}}/api/events",
+          "host": [
+            "{{backend}}"
+          ],
+          "path": [
+            "api",
+            "events"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Events - Get by ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{backend}}/api/events/{{eventId}}",
+          "host": [
+            "{{backend}}"
+          ],
+          "path": [
+            "api",
+            "events",
+            "{{eventId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Events - Update",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{backend}}/api/events/{{eventId}}",
+          "host": [
+            "{{backend}}"
+          ],
+          "path": [
+            "api",
+            "events",
+            "{{eventId}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Updated title\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Events - Delete",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{backend}}/api/events/{{eventId}}",
+          "host": [
+            "{{backend}}"
+          ],
+          "path": [
+            "api",
+            "events",
+            "{{eventId}}"
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "backend",
+      "value": "http://localhost:4000"
+    },
+    {
+      "key": "timestamp",
+      "value": "{{now}}"
+    }
+  ]
+}
