@@ -1,51 +1,38 @@
-import type { EventItem } from "@/types/event";
+import type { MessageItem } from "@/types/message";
 
-const formatDisplay = (date?: string, time?: string) => {
-  if (!date && !time) return "No schedule provided";
-
-  const dateLabel = date
-    ? new Date(date).toLocaleDateString(undefined, {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      })
-    : "Date TBD";
-
-  if (!time) {
-    return dateLabel;
-  }
-
-  const [hours = "00", minutes = "00"] = time.split(":");
-  const dateObj = new Date(date || new Date().toISOString().split("T")[0]);
-  dateObj.setHours(Number(hours), Number(minutes));
-
-  const timeLabel = dateObj.toLocaleTimeString(undefined, {
+const formatTimestamp = (timestamp?: string) => {
+  if (!timestamp) return "Unknown time";
+  return new Date(timestamp).toLocaleString(undefined, {
+    month: "short",
+    day: "numeric",
     hour: "numeric",
     minute: "2-digit",
   });
-
-  return `${dateLabel} · ${timeLabel}`;
 };
 
-interface EventCardProps {
-  event: EventItem;
+interface MessageCardProps {
+  message: MessageItem;
 }
 
-export const EventCard = ({ event }: EventCardProps) => {
+export const EventCard = ({ message }: MessageCardProps) => {
   return (
     <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
       <div className="flex items-center justify-between gap-2">
-        <h3 className="text-lg font-semibold text-slate-900">{event.title}</h3>
-        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium capitalize text-slate-600">
-          {event.type ?? "none"}
-        </span>
+        <h3 className="text-lg font-semibold text-slate-900">
+          {message.text || "No text provided"}
+        </h3>
+        {/* <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium capitalize text-slate-600">
+          {message.tag ?? "none"}
+        </span> */}
       </div>
-      <p className="mt-2 text-sm text-slate-500">{event.source_text ?? "No message preview"}</p>
+      <p className="mt-2 text-sm text-slate-500">
+        Sender: <span className="font-mono">{message.sender_id}</span>
+      </p>
       <p className="mt-4 text-sm font-medium text-slate-700">
-        {formatDisplay(event.date, event.time)}
+        Received: {formatTimestamp(message.date_received || message.createdAt)}
       </p>
       <p className="mt-2 text-xs uppercase tracking-wide text-slate-400">
-        Confidence: {event.confidence ?? "n/a"}
+        Message ID: {message.message_id}
       </p>
     </article>
   );

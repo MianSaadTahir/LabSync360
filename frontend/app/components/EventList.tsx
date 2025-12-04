@@ -1,23 +1,23 @@
 import { EventCard } from "./EventCard";
-import type { EventItem } from "@/types/event";
+import type { MessageItem } from "@/types/message";
 
 interface EventListProps {
-  events: EventItem[];
+  messages: MessageItem[];
 }
 
-export const EventList = ({ events }: EventListProps) => {
-  if (!events.length) {
+export const EventList = ({ messages }: EventListProps) => {
+  if (!messages.length) {
     return (
       <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-slate-500">
-        No events yet. Trigger an extraction to see items here.
+        No messages yet. Send something to our Telegram bot to see it here.
       </div>
     );
   }
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      {events.map((event) => (
-        <EventCard key={event._id ?? event.event_id ?? event.title} event={event} />
+      {messages.map((message) => (
+        <EventCard key={message._id} message={message} />
       ))}
     </div>
   );

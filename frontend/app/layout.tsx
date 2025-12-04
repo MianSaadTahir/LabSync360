@@ -15,7 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "LabSync AI",
-  description: "Rule-based Telegram event extraction dashboard",
+  description:
+    "Telegram-powered client intake dashboard for capturing and displaying incoming bot messages.",
 };
 
 export default function RootLayout({
@@ -36,14 +37,14 @@ export default function RootLayout({
               </Link>
               <nav className="flex items-center gap-4 text-sm font-medium text-slate-600">
                 <Link href="/events" className="hover:text-slate-900">
-                  Events
+                  Dashboard
                 </Link>
               </nav>
             </div>
           </header>
           <div className="flex-1">{children}</div>
           <footer className="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500">
-            Sprint 1-6 prototype · Telegram → Events pipeline
+            © 2025 LabSync AI — All Rights Reserved
           </footer>
         </div>
       </body>

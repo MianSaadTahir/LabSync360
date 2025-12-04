@@ -8,7 +8,7 @@ Minimal end-to-end system that ingests Telegram bot messages, lets operators tag
 - Manual message tagging via REST (`GET /messages`, `PATCH /messages/:id/tag`)
 - Rule-based extraction for dates/times/keywords (`POST /extract/:message_id`)
 - Event structuring and CRUD API (`/api/events` suite + `/events/create`)
-- Next.js Event Viewer at `http://localhost:3000/events`
+- Next.js Telegram Message Viewer at `http://localhost:3000/events`
 - Mock data seeding, Postman collection, and full documentation (see `BACKEND.md`, `FRONTEND.md`)
 
 ## Project Layout
@@ -126,12 +126,23 @@ Import `LabSync.postman_collection.json` for ready-made calls covering:
 
 ## Testing Flow
 
+### Automated Workflow (Recommended ⚡)
+
+1. Send a Telegram message (or POST to the webhook manually).
+2. `GET /api/messages` to see stored messages
+3. **`POST /api/extract/:message_id/complete`** with optional `{ "tag": "meeting" }` - **This processes everything in one call!**
+4. Check `GET /api/events` and refresh the `/events` UI.
+
+### Manual Workflow
+
 1. Send a Telegram message (or POST to the webhook manually).
 2. `GET /api/messages`
 3. Tag it with `PATCH /api/messages/:id/tag`.
 4. Run `POST /api/extract/:message_id` to create an extracted event.
 5. `POST /api/events/create` with the extracted id.
 6. Check `GET /api/events` and refresh the `/events` UI.
+
+**See `QUICK_START.md` for detailed examples and `WORKFLOW.md` for complete documentation.**
 
 ## Mock Data
 
