@@ -26,7 +26,7 @@ LabSync AI is a simple but powerful system that captures Telegram bot messages t
 ## Technologies Used
 
 - Backend: Node.js, Express, MongoDB
-- Frontend: Next.js 14 (App Router), Tailwind CSS
+- Frontend: Next.js 14, Tailwind CSS
 - Integration: Telegram Bot API + Webhooks
 
 ## Usage
