@@ -1,155 +1,95 @@
-# LabSync AI — Release 1 & 2
+# LabSync AI — Telegram Client Intake System
 
-Minimal end-to-end system that ingests Telegram bot messages, lets operators tag them, performs rule-based event extraction, and surfaces finished events in a Next.js viewer.
+LabSync AI is a simple but powerful system that captures Telegram bot messages through a webhook, stores them in MongoDB, and displays them on a clean Next.js dashboard for internal teams to review.
 
-## Features (Sprint 1-6)
+## Table of Contents
 
-- Telegram webhook intake (`/api/webhook/telegram`) stores every raw message
-- Manual message tagging via REST (`GET /messages`, `PATCH /messages/:id/tag`)
-- Rule-based extraction for dates/times/keywords (`POST /extract/:message_id`)
-- Event structuring and CRUD API (`/api/events` suite + `/events/create`)
-- Next.js Telegram Message Viewer at `http://localhost:3000/events`
-- Mock data seeding, Postman collection, and full documentation (see `BACKEND.md`, `FRONTEND.md`)
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Technologies Used](#technologies-used)
+- [Usage](#usage)
+- [Contributing](#contributing)
 
-## Project Layout
+## Features
 
-```
-/labsyncAI
-├─ backend/        # Express + Mongo service
-├─ frontend/       # Next.js 14 UI (App Router)
-├─ BACKEND.md      # Backend deep-dive
-├─ FRONTEND.md     # Frontend notes
-├─ README.md       # You are here
-├─ .env.example    # Shared env template
-└─ LabSync.postman_collection.json
-```
+- Telegram webhook receiver (`/api/webhook/telegram`)
+- Stores all incoming Telegram messages in MongoDB
+- REST API to list messages (`GET /messages`)
+- Next.js dashboard to view all captured messages
+- Fully local setup with ngrok support for webhook testing
 
-## Prerequisites
+## Screenshots
 
-- Node.js 18+
-- MongoDB 6+
-- Telegram Bot token (via BotFather) for real webhook tests
+<img src="/assets/1.png" alt="frontend" width="75%">
+<img src="/assets/2.png" alt="msg" width="75%">
 
-## Getting Started
+## Technologies Used
 
-### 1. Configure Environment
+- Backend: Node.js, Express, MongoDB, Mongoose
+- Frontend: Next.js 14 (App Router), Tailwind CSS
+- Integration: Telegram Bot API + Webhooks
 
-```
+## Usage
+
+### 1. Environment Variables
+
+```bash
 cp .env.example backend/.env
-cp .env.example frontend/.env.local   # keep only NEXT_PUBLIC_API_BASE_URL entry
+cp .env.example frontend/.env.local
 ```
 
-Update connection string + tokens as needed.
+Update:
 
-### 2. Backend
+- MONGODB_URI
+- TELEGRAM_BOT_TOKEN
+- NEXT_PUBLIC_API_BASE_URL
+
+### 2. Run the Project
+
+Backend:
 
 ```bash
 cd backend
 npm install
-npm run dev            # starts on http://localhost:4000
-npm run seed           # optional: loads mock data
+npm run dev
 ```
 
-### 3. Frontend
+Frontend:
 
 ```bash
 cd frontend
 npm install
-npm run dev            # http://localhost:3000
+npm run dev
 ```
 
-Visit `/events` to see synced events.
+Open the dashboard at:
+`http://localhost:3000/`
 
-## Telegram Webhook Setup (Simple Steps)
+### 3. Telegram Webhook Setup
 
-**You need:** Your bot token from BotFather
+- Start backend first
+- Start ngrok:
+  `ngrok http 4000`
+- Copy the HTTPS forwarding URL shown by ngrok. `(https://abcd1234.ngrok-free.app)`
+- Register webhook with Telegram by opening this URL in your browser:
+  `https://api.telegram.org/botYOUR_BOT_TOKEN/setWebhook?url=YOUR_NGROK_URL/api/webhook/telegram`
+- Response:
 
-### Step 1: Make your backend accessible from internet
-
-Install ngrok (if you don't have it):
-
-```bash
-# macOS
-brew install ngrok
-
-# Or download from https://ngrok.com/download
+```json
+{ "ok": true, "result": true, "description": "Webhook was set" }
 ```
 
-Start ngrok to expose your backend:
+### 4. Test the workflow
 
-```bash
-ngrok http 4000
-```
+- Open your Telegram bot → press Start.
+- Send any message.
+- Backend logs will show the incoming message.
+- View stored messages:
+  `GET http://localhost:4000/api/messages`
+- View dashboard:
+  `http://localhost:3000/events`
 
-You'll see something like:
+## Contributing
 
-```
-Forwarding  https://abc123.ngrok.io -> http://localhost:4000
-```
-
-**Copy that HTTPS URL** (e.g., `https://abc123.ngrok.io`)
-
-### Step 2: Register webhook with Telegram
-
-Open your browser and go to this URL (replace `YOUR_BOT_TOKEN` and `YOUR_NGROK_URL`):
-
-```
-https://api.telegram.org/botYOUR_BOT_TOKEN/setWebhook?url=YOUR_NGROK_URL/api/webhook/telegram
-```
-
-**Example:**
-
-```
-https://api.telegram.org/bot123456789:ABCdefGHIjklMNOpqrsTUVwxyz/setWebhook?url=https://abc123.ngrok.io/api/webhook/telegram
-```
-
-You should see: `{"ok":true,"result":true,"description":"Webhook was set"}`
-
-### Step 3: Test it!
-
-1. Make sure your backend is running (`npm run dev` in backend folder)
-2. Make sure ngrok is still running
-3. Send a message to your Telegram bot
-4. Check your backend logs - you should see the message received!
-5. Visit `http://localhost:4000/api/messages` to see stored messages
-
-**Done!** Now every message sent to your bot will be saved automatically.
-
-## Postman Collection
-
-Import `LabSync.postman_collection.json` for ready-made calls covering:
-
-- Telegram webhook sample request
-- Message list + tag update
-- Extraction + Event creation flow
-- Event CRUD + filters
-
-## Testing Flow
-
-### Automated Workflow (Recommended ⚡)
-
-1. Send a Telegram message (or POST to the webhook manually).
-2. `GET /api/messages` to see stored messages
-3. **`POST /api/extract/:message_id/complete`** with optional `{ "tag": "meeting" }` - **This processes everything in one call!**
-4. Check `GET /api/events` and refresh the `/events` UI.
-
-### Manual Workflow
-
-1. Send a Telegram message (or POST to the webhook manually).
-2. `GET /api/messages`
-3. Tag it with `PATCH /api/messages/:id/tag`.
-4. Run `POST /api/extract/:message_id` to create an extracted event.
-5. `POST /api/events/create` with the extracted id.
-6. Check `GET /api/events` and refresh the `/events` UI.
-
-**See `QUICK_START.md` for detailed examples and `WORKFLOW.md` for complete documentation.**
-
-## Mock Data
-
-Run `npm run seed` inside `backend` to populate sample messages, extracted events, and events.
-
-## Next Steps
-
-- Integrate authentication + role-based access
-- Replace rule-based extractor with LLM-powered pipeline
-- Sync events to external calendars (Google/Microsoft)
+Contributions, issues, and feature requests are welcome.
+Feel free to check out the [issues page](https://github.com/MianSaadTahir/LabSync-AI/issues) for more information.
