@@ -21,7 +21,7 @@ const fetchMessages = async (): Promise<MessageItem[]> => {
   }
 };
 
-export default async function EventsPage() {
+export default async function MessagesPage() {
   const messages = await fetchMessages();
 
   return (

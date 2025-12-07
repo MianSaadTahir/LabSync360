@@ -16,7 +16,7 @@ export default function Home() {
       </p>
       <div className="flex flex-wrap gap-4">
         <Link
-          href="/events"
+          href="/messages"
           className="rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow hover:bg-blue-500"
         >
           Inbox
