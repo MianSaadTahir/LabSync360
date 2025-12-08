@@ -42,8 +42,7 @@ const MeetingSchema = new Schema<IMeeting>(
   { timestamps: true }
 );
 
-// Index for faster queries
-MeetingSchema.index({ messageId: 1 });
+// Index for faster queries (messageId already has unique index from unique: true)
 MeetingSchema.index({ project_name: 1 });
 MeetingSchema.index({ 'client_details.name': 1 });
 

@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model, Types } from 'mongoose';
+import mongoose, { Schema, Document, Model, Types, CallbackWithoutResult } from 'mongoose';
 
 export interface IPeopleCost {
   count: number;
@@ -99,28 +99,9 @@ const BudgetSchema = new Schema<IBudget>(
   { timestamps: true }
 );
 
-// Index for faster queries
-BudgetSchema.index({ meetingId: 1 });
+// Index for faster queries (meetingId already has unique index from unique: true)
 BudgetSchema.index({ project_name: 1 });
 BudgetSchema.index({ total_budget: 1 });
-
-// Calculate total_budget before saving
-BudgetSchema.pre('save', function (next) {
-  if (this.isModified('people_costs') || this.isModified('resource_costs')) {
-    let peopleTotal = 0;
-    Object.values(this.people_costs).forEach((role) => {
-      peopleTotal += role.total || 0;
-    });
-
-    let resourceTotal = 0;
-    Object.values(this.resource_costs).forEach((cost) => {
-      resourceTotal += cost || 0;
-    });
-
-    this.total_budget = peopleTotal + resourceTotal;
-  }
-  next();
-});
 
 const Budget: Model<IBudget> = mongoose.model<IBudget>('Budget', BudgetSchema);
 
