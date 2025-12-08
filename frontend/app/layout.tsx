@@ -36,8 +36,20 @@ export default function RootLayout({
                 LabSync AI
               </Link>
               <nav className="flex items-center gap-4 text-sm font-medium text-slate-600">
+                <Link href="/" className="hover:text-slate-900">
+                  Home
+                </Link>
                 <Link href="/messages" className="hover:text-slate-900">
-                  Dashboard
+                  Messages
+                </Link>
+                <Link href="/meetings" className="hover:text-slate-900">
+                  Meetings
+                </Link>
+                <Link href="/budgets" className="hover:text-slate-900">
+                  Budgets
+                </Link>
+                <Link href="/allocations" className="hover:text-slate-900">
+                  Allocations
                 </Link>
               </nav>
             </div>
