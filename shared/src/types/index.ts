@@ -61,3 +61,5 @@ export interface BudgetAllocation {
 
 export type ModuleStatus = 'pending' | 'extracted' | 'designed' | 'allocated' | 'failed';
 
+
+

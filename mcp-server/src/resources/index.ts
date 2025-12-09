@@ -16,3 +16,5 @@ export function getAllResources(): MCPResource[] {
   return resources;
 }
 
+
+

@@ -8,3 +8,5 @@ router.get('/:id', getMeetingById);
 
 export default router;
 
+
+

@@ -37,12 +37,19 @@ export const handleTelegramWebhook = async (
   next: NextFunction
 ): Promise<Response | void> => {
   try {
+    console.log('[Webhook] Received request from Telegram');
+    console.log('[Webhook] Request body:', JSON.stringify(req.body, null, 2));
+    
     const update = req.body as TelegramUpdate;
     const message = update?.message || update?.edited_message;
 
     if (!message || !message.message_id) {
+      console.warn('[Webhook] Invalid Telegram payload - no message found');
       return errorResponse(res, 400, 'Invalid Telegram payload');
     }
+
+    console.log(`[Webhook] Processing message ${message.message_id} from user ${message.from?.id}`);
+    console.log(`[Webhook] Message text: ${message.text?.substring(0, 100) || '(no text)'}`);
 
     const payload = {
       message_id: String(message.message_id),
@@ -59,8 +66,11 @@ export const handleTelegramWebhook = async (
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
+    console.log(`[Webhook] ✅ Message saved to database: ${storedMessage._id}`);
+
     // Automatically trigger meeting extraction in background (non-blocking)
     if (storedMessage && message.text && message.text.trim().length > 0) {
+      console.log(`[Webhook] Triggering meeting extraction for message ${storedMessage._id}`);
       // Process extraction asynchronously (don't wait for it)
       processExtractionAsync(storedMessage._id.toString()).catch((error) => {
         console.error('[Webhook] Background extraction failed:', error);

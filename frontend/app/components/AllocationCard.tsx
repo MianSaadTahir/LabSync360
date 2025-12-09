@@ -88,3 +88,5 @@ export const AllocationCard = ({ allocation }: AllocationCardProps) => {
   );
 };
 
+
+

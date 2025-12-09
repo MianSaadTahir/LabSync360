@@ -46,3 +46,5 @@ const BudgetAllocation: Model<IBudgetAllocation> = mongoose.model<IBudgetAllocat
 
 export default BudgetAllocation;
 
+
+

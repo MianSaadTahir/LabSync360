@@ -2,12 +2,22 @@ import 'dotenv/config';
 import http from 'http';
 import app from './app';
 import connectDB from './src/config/db';
+import { registerTelegramWebhook, getTelegramWebhookInfo } from './src/utils/telegramWebhook';
 
 const PORT = process.env.PORT || 4000;
 
 const startServer = async (): Promise<void> => {
   try {
     await connectDB();
+    
+    // Register Telegram webhook on server startup
+    const webhookRegistered = await registerTelegramWebhook();
+    
+    // Show current webhook info for debugging
+    if (webhookRegistered) {
+      await getTelegramWebhookInfo();
+    }
+    
     const server = http.createServer(app);
     
     // Handle server errors (like port already in use)
