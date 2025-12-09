@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import Budget from '../models/Budget';
 import { successResponse, errorResponse } from '../utils/response';
+import { BudgetDesignService } from '../services/budgetDesignService';
 
 export const getBudgets = async (
   req: Request,
@@ -30,6 +31,28 @@ export const getBudgetById = async (
       return errorResponse(res, 404, 'Budget not found');
     }
     
+    return successResponse(res, { data: budget });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// New endpoint for budget design
+export const designBudget = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
+  try {
+    const { meetingId } = req.params;
+
+    if (!meetingId) {
+      return errorResponse(res, 400, 'meetingId is required');
+    }
+
+    const service = new BudgetDesignService();
+    const budget = await service.designAndSave(meetingId);
+
     return successResponse(res, { data: budget });
   } catch (error) {
     next(error);

@@ -39,6 +39,12 @@ yarn-error.log*
 # TypeScript
 *.tsbuildinfo
 
+# Compiled JavaScript in src directories (should only be in dist/)
+**/src/**/*.js
+**/src/**/*.js.map
+**/src/**/*.d.ts
+**/src/**/*.d.ts.map
+
 # MCP Server
 mcp-server/dist/
 mcp-server/node_modules/
@@ -55,3 +61,5 @@ shared/node_modules/
 backend/dist/
 backend/node_modules/
 *.md
+*.js
+*.js.map

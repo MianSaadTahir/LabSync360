@@ -2,6 +2,23 @@ import Message from '../models/Message';
 import Meeting, { IMeeting } from '../models/Meeting';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
+// Import budget design service for automatic triggering
+let budgetDesignService: any = null;
+
+async function triggerBudgetDesignAsync(meetingId: string): Promise<void> {
+  try {
+    // Lazy load to avoid circular dependencies
+    if (!budgetDesignService) {
+      const { BudgetDesignService } = await import('./budgetDesignService');
+      budgetDesignService = new BudgetDesignService();
+    }
+    await budgetDesignService.designAndSave(meetingId);
+    console.log(`[MeetingExtractionService] Successfully designed budget for meeting ${meetingId}`);
+  } catch (error) {
+    console.error(`[MeetingExtractionService] Budget design error for meeting ${meetingId}:`, error);
+  }
+}
+
 // Define MeetingDetails locally to avoid cross-package import issues
 interface MeetingDetails {
   project_name: string;
@@ -167,6 +184,13 @@ IMPORTANT:
         },
         { upsert: true, new: true, setDefaultsOnInsert: true }
       );
+
+      // Automatically trigger budget design in background (non-blocking)
+      if (meeting) {
+        triggerBudgetDesignAsync(meeting._id.toString()).catch((error) => {
+          console.error('[MeetingExtractionService] Background budget design failed:', error);
+        });
+      }
 
       return meeting;
     } catch (error) {
