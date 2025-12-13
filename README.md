@@ -38,8 +38,6 @@ LabSync AI is an automated budget management system that uses AI to extract proj
 - Node.js, Express.js, TypeScript
 - MongoDB + Mongoose
 - Socket.io (WebSocket)
-- Google Gemini API
-- Model Context Protocol (MCP)
 
 **Frontend:**
 
@@ -49,8 +47,8 @@ LabSync AI is an automated budget management system that uses AI to extract proj
 
 **Agentic AI:**
 
-- Google Gemini Flash
-- MCP Agents
+- Google Gemini Flash API
+- Model Context Protocol (MCP) Agents
 
 ## Prerequisites
 
@@ -120,7 +118,7 @@ Open the dashboard at `http://localhost:3000`
 
 ### 5. Telegram Webhook Setup
 
-> **⚠️ Note for Pakistan Users**: Telegram API may be blocked in Pakistan. Use a VPN to register webhooks and receive messages.
+> ⚠️ Telegram API may be blocked in **Pakistan**. Use a VPN to register webhooks and receive messages.
 
 **Start ngrok:**
 
