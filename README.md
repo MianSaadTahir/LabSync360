@@ -11,7 +11,7 @@ LabSync AI is an automated budget management system that uses AI to extract proj
 - [Usage](#usage)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
-
+- [License](#license)
 ## Features
 
 - **Telegram Integration**: Webhook receiver captures client messages via Telegram bot
@@ -208,3 +208,6 @@ pkill -f node  # Mac/Linux
 
 Contributions, issues, and feature requests are welcome!  
 Feel free to check the [issues page](https://github.com/MianSaadTahir/LabSync-AI/issues).
+## License
+
+This project is open source and available under the MIT [License](https://github.com/MianSaadTahir/LabSync-AI/blob/main/LICENSE).
