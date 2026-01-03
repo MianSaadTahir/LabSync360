@@ -1,6 +1,6 @@
 # LabSync 360 — Intelligent Budget Management System
 
-An automated, AI-driven project budget management system designed to streamline the workflow from client requirements to financial tracking.
+LabSync 360 is an automated, AI-powered project budget management system that transforms client requirements into structured budgets and allocations, enhancing efficiency, transparency, and resource control through an MCP server and Agentic AI framework.
 
 ## Table of Contents
 
