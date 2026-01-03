@@ -1,213 +1,128 @@
-# LabSync AI — Intelligent Budget Management System
+# LabSync 360 — Intelligent Budget Management System
 
-LabSync AI is an automated budget management system that uses AI to extract project requirements from Telegram messages, design optimal budgets, and track allocations through a real-time dashboard.
+LabSync 360 is an automated, AI-driven project budget management system designed to streamline the workflow from client requirements to financial tracking.
 
 ## Table of Contents
 
 - [Features](#features)
 - [Screenshots](#screenshots)
-- [Technologies Used](#technologies-used)
-- [Prerequisites](#prerequisites)
+- [Technologies](#technologies)
 - [Usage](#usage)
-- [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
 - [License](#license)
+
 ## Features
 
-- **Telegram Integration**: Webhook receiver captures client messages via Telegram bot
-- **AI Meeting Extraction**: Automatically extracts project requirements, budget, and timeline from messages using Gemini AI
-- **AI Budget Design**: Generates optimized budget allocations based on project requirements
-- **Budget Management**: Create, allocate, and track budgets with real-time updates
-- **Real-time Dashboard**: Live budget tracking with WebSocket notifications
-- **MCP Agent System**: Model Context Protocol integration for AI-powered budget intelligence
-- **REST API**: Complete API for budget operations and message management
+- **Telegram Integration**: Seamless communication channel for capturing client requirements via webhooks.
+- **Agentic AI Workflow**: Autonomous agents utilizing MCP server for complex budget planning and decision-making.
+- **Automated Extraction**: Meeting Extraction Agent parses natural language messages to identify project scope, goals, and timelines.
+- **Smart Budget Design**: Generates optimized financial plans and resource allocations based on extracted data.
+- **Real-time Dashboard**: Interactive Next.js frontend with Socket.io for live updates on messages and budgets.
+- **Scalable Architecture**: Powered by Node.js, Express, and MongoDB for robust data handling.
 
 ## Screenshots
 
-<img src="/assets/1.png" alt="1" width="75%">
-<img src="/assets/2.png" alt="2" width="75%">
-<img src="/assets/3.png" alt="3" width="75%">
-<img src="/assets/4.png" alt="4" width="75%">
-<img src="/assets/5.png" alt="5" width="75%">
-<img src="/assets/6.png" alt="6" width="75%">
+<img src="/assets/1.png" alt="Dashboard Overview" width="75%">
+<img src="/assets/2.png" alt="Message Analysis" width="75%">
+<img src="/assets/3.png" alt="Budget Planning" width="75%">
+<img src="/assets/4.png" alt="Allocation Tracking" width="75%">
+<img src="/assets/5.png" alt="AI Insights" width="75%">
+<img src="/assets/6.png" alt="Settings" width="75%">
 
-## Technologies Used
+## Technologies
 
-**Backend:**
-
-- Node.js, Express.js, TypeScript
-- MongoDB
-- Socket.io
-
-**Frontend:**
-
-- Next.js, React
-- TypeScript, Tailwind CSS
-
-**Agentic AI:**
-
-- Google Gemini Flash API
-- Model Context Protocol (MCP) Agents
-
-## Prerequisites
-
-- **Node.js** v18+ - [Download](https://nodejs.org/)
-- **MongoDB** - [Download](https://www.mongodb.com/try/download/community)
-- **Telegram Bot Token** - Get from [@BotFather](https://t.me/botfather)
-- **Gemini API Keys** - Get from [Google AI Studio](https://makersuite.google.com/app/apikey)
+- **Frontend**: Next.js, React, TypeScript, Tailwind CSS
+- **Backend**: Node.js, Express.js, TypeScript, Socket.io
+- **Database**: MongoDB
 
 ## Usage
 
-### 1. Clone & Install Dependencies
+Follow these steps to set up and run the project locally.
+
+### 1. Clone and Install
 
 ```bash
-git clone https://github.com/MianSaadTahir/LabSync-AI
-cd labsync-ai
+git clone https://github.com/MianSaadTahir/LabSync360.git
+cd LabSync360
 npm install
 ```
 
 ### 2. Environment Configuration
+
+Set up your environment variables for backend and frontend.
 
 ```bash
 cp .env.example backend/.env
 cp .env.example frontend/.env.local
 ```
 
-Update:
+**Update the `.env` files with your credentials:**
 
-- MONGODB_URI
-- TELEGRAM_BOT_TOKEN
-- TELEGRAM_WEBHOOK_URL
-- GEMINI_API_KEY
+- `MONGODB_URI`
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_WEBHOOK_URL`
+- `GEMINI_API_KEY`
 
-### 3. Start MongoDB
+### 3. Start Database
 
-**Windows:**
+Ensure your MongoDB service is running.
 
-```bash
-net start MongoDB
-```
+- **macOS (Homebrew)**: `brew services start mongodb-community`
+- **Windows**: `net start MongoDB`
+- **Linux**: `sudo systemctl start mongod`
 
-**Mac:**
+### 4. Run Application
 
-```bash
-brew services start mongodb-community
-```
+Follow this specific order in separate terminals:
 
-**Linux:**
+**1. Start Backend**
 
 ```bash
-sudo systemctl start mongod
-```
-
-### 4. Run the Project
-
-```bash
+cd backend
 npm run dev
 ```
 
-This starts:
+**2. Enable VPN & Start Ngrok**
 
-- Frontend on `http://localhost:3000`
-- Backend on `http://localhost:4000`
-- MCP servers for AI agents
-- WebSocket server
+> ⚠️ Important for users in Pakistan: Turn on your VPN to ensure Telegram Webhook connectivity.
 
-Open the dashboard at `http://localhost:3000`
-
-### 5. Telegram Webhook Setup
-
-> ⚠️ Telegram API may be blocked in **Pakistan**. Use a VPN to register webhook and receive messages.
-
-**Start ngrok:**
+Open a new terminal and run:
 
 ```bash
 ngrok http 4000
 ```
 
-**Register webhook** (open in browser):
+_Copy the HTTPS forwarding URL provided by Ngrok (e.g., `https://your-url.ngrok-free.app`)_
 
-```
-https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook?url=<YOUR_NGROK_URL>/api/webhook/telegram
+**3. Start Frontend**
+Open a new terminal and run:
+
+```bash
+cd frontend
+npm run dev
 ```
 
-Expected response:
+### 5. Telegram Webhook Setup
 
-```json
-{ "ok": true, "result": true, "description": "Webhook was set" }
-```
+Now that Ngrok is running, register your webhook to receive messages.
+
+1.  **Construct URL**: Replace `<TOKEN>` with your Bot Token and `<NGROK_URL>` with the URL from Step 2.
+    ```
+    https://api.telegram.org/bot<TOKEN>/setWebhook?url=<NGROK_URL>/api/webhook/telegram
+    ```
+2.  **Execute**: Paste the constructed URL into your browser address bar and hit Enter.
+    _You should see:_ `{"ok":true, "result":true, "description":"Webhook was set"}`
 
 ### 6. Test the Workflow
 
-1. Open your Telegram bot → Send a message like:
-   ```
-   I need a modern and responsive e-commerce website for apparel products. My estimated budget is 75,000 USD, with a delivery timeline of 5 weeks.
-   ```
-2. Check backend logs for incoming message.
-3. View messages on dashboard: `http://localhost:3000/messages`
-4. AI will automatically extract project details
-
-## Troubleshooting
-
-### Telegram Connection Timeout
-
-- Enable VPN (especially in Pakistan)
-- Verify bot token is correct
-- Check ngrok is running
-
-### MongoDB Connection Error
-
-```bash
-npm run check:mongodb
-```
-
-### macOS Setup Issues
-
-#### Permission denied for `tsc`, `tsx`, `next`, `concurrently`
-
-```bash
-sh: node_modules/.bin/tsc: Permission denied
-sh: node_modules/.bin/tsx: Permission denied
-sh: node_modules/.bin/next: Permission denied
-sh: node_modules/.bin/concurrently: Permission denied
-```
-
-**Cause:** macOS blocks execution permission on some binaries.
-
-**Fix:** Run this once at project root:
-
-```bash
-chmod -R +x node_modules/.bin
-chmod -R +x backend/node_modules/.bin
-chmod -R +x frontend/node_modules/.bin
-chmod -R +x shared/node_modules/.bin
-chmod -R +x agents/node_modules/.bin
-chmod -R +x mcp-server/node_modules/.bin
-xattr -dr com.apple.quarantine .
-xattr -dr com.apple.quarantine node_modules
-```
-
-### Gemini API Error
-
-Update model name in agent files to:
-
-```typescript
-model: "gemini-flash-latest";
-```
-
-### Port Already in Use
-
-```bash
-# Kill node processes
-pkill -f node  # Mac/Linux
-# Or use Task Manager on Windows
-```
+1.  Open your bot in Telegram.
+2.  Send a project requirement message.
+3.  Check the Dashboard at [http://localhost:3000/messages](http://localhost:3000/messages).
 
 ## Contributing
 
-Contributions, issues, and feature requests are welcome!  
-Feel free to check the [issues page](https://github.com/MianSaadTahir/LabSync-AI/issues).
+Contributions are welcome! Please check the [Issues page](https://github.com/MianSaadTahir/LabSync360/issues) or submit a Pull Request.
+
 ## License
 
-This project is open source and available under the MIT [License](https://github.com/MianSaadTahir/LabSync-AI/blob/main/LICENSE).
-
+This project is licensed under the [MIT License](https://github.com/MianSaadTahir/LabSync360/blob/main/LICENSE).
