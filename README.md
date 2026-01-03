@@ -29,6 +29,8 @@ LabSync 360 is an automated, AI-powered project budget management system that tr
 <img src="/assets/4.png" alt="Allocation Tracking" width="75%">
 <img src="/assets/5.png" alt="AI Insights" width="75%">
 <img src="/assets/6.png" alt="Settings" width="75%">
+<img src="/assets/7.png" alt="Settings" width="75%">
+<img src="/assets/8.png" alt="Settings" width="75%">
 
 ## Technologies
 
@@ -131,5 +133,3 @@ Contributions are welcome! Please check the [Issues page](https://github.com/Mia
 ## License
 
 This project is licensed under the [MIT License](https://github.com/MianSaadTahir/LabSync360/blob/main/LICENSE).
-
-
