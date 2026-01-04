@@ -35,7 +35,7 @@ LabSync 360 is an automated, AI-powered project budget management system that tr
 ## Technologies
 
 - **Frontend**: Next.js, React, TypeScript, Tailwind CSS
-- **Backend**: Node.js, Express.js, TypeScript, Socket.io
+- **Backend**: Node.js, Express.js, Socket.io
 - **Database**: MongoDB
 
 ## Usage
@@ -133,3 +133,4 @@ Contributions are welcome! Please check the [Issues page](https://github.com/Mia
 ## License
 
 This project is licensed under the [MIT License](https://github.com/MianSaadTahir/LabSync360/blob/main/LICENSE).
+
